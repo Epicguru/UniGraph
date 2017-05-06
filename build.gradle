@@ -4,6 +4,10 @@ ext{
 	gdxVersion = "1.9.6"
 }
 
+repositories{
+	mavenCentral()
+}
+
 dependencies{
 
 	//compile group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
