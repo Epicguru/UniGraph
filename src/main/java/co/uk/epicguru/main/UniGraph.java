@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 
 public class UniGraph extends Game{
 
@@ -38,13 +37,12 @@ public class UniGraph extends Game{
 	}
 	
 	public static Color backgroundColour = new Color(0.9f, 0.9f, 0.9f, 1);
-	public static ColourTheme theme = ColourTheme.DARK;
-	private static GraphSampler graph = (x) -> {
-		return MathUtils.cosDeg(x * 20f) * 20f;
-	};
-	private Batch batch;
-	private OrthographicCamera camera;
-	private float UNIT = 32f;
+	public static ColourTheme theme = ColourTheme.LIGHT;
+	private static GraphSampler graph = new DynamicGraphSampler(0.1f);
+	private static Batch batch;
+	public static OrthographicCamera camera;
+	public static float timer;
+	private float UNIT = 64f;
 	
 	public void create() {
 		log("Hello world!");
@@ -56,12 +54,12 @@ public class UniGraph extends Game{
 	
 	public void resize (int width, int height) {
 		
-		this.camera.setToOrtho(false, width, height);
+		camera.setToOrtho(false, width, height);
 		
 	}
 	
 	private void updateBG(){
-		theme = ColourTheme.DARK;
+		theme = ColourTheme.LIGHT;
 		
 		switch(theme){
 		case DARK:
@@ -75,12 +73,15 @@ public class UniGraph extends Game{
 	
 	public void update(float delta){
 		
+		// Timer
+		timer += delta;
+		
 		// Update others
 		this.updateBG();
 		Gdx.graphics.setTitle("Uni Graph - " + Gdx.graphics.getFramesPerSecond() + "fps");
 		CameraUtils.moveCamera(camera);
 		
-		this.camera.update();
+		camera.update();
 	}
 	
 	public void render(){
@@ -94,6 +95,9 @@ public class UniGraph extends Game{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		RenderUtils.renderGrid(camera, UNIT, batch);
+		RenderUtils.renderNumbers(camera, UNIT, batch);
+		Graphing.renderGraph(camera, batch, UNIT, UniGraph.graph, 1f, 0, graph.getEnd() == -1 ? 1000 : graph.getEnd());
+		RenderUtils.renderMouseValue(batch);
 		
 		batch.end();
 	}
