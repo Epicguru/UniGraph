@@ -11,7 +11,7 @@ public interface GraphSampler {
 	}
 	
 	public default float getEnd(){
-		return -1f;
+		return 1000f;
 	}
 	
 	public default Color getColor(){

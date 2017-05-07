@@ -9,19 +9,17 @@ import co.uk.epicguru.main.StaticGraphSampler;
 
 public class SoundStaticGraph extends StaticGraphSampler {
 	
+	static AudioRecorder recorder = Gdx.audio.newAudioRecorder(22050, true);
 	public void runGraph(Param p){		
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
-			super.clearPoints();
+			super.clearPoints();			
 			
-			AudioRecorder recorder = Gdx.audio.newAudioRecorder(22050, true);
-			
-			short[] test = new short[22050 * 20];
+			short[] test = new short[22050 * 10];
 			recorder.read(test, 0, test.length);
 			
 			for(short s : test){
 				super.addPoint((float)s);
-			}
-			
+			}			
 		}		
 	}	
 }

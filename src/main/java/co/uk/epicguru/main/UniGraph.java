@@ -105,8 +105,20 @@ public class UniGraph extends Game{
 		
 		RenderUtils.renderGrid(camera, UNIT, batch);
 		RenderUtils.renderNumbers(camera, UNIT, batch);
+		
+		float sampleRate = 1f;
+		float width = camera.viewportWidth / UNIT * camera.zoom;
+
+		final int EXTRA = 1;
+
+		int startX = (int)(camera.position.x / UNIT - width / 2 - EXTRA);
+		int endX = (int)(camera.position.x / UNIT + width / 2 + EXTRA * 2);
+		
+		if(endX < startX)
+			endX = startX + 1;
+		
 		for(GraphSampler g : graphs){
-			Graphing.renderGraph(camera, batch, UNIT, g, 1f, 0, g.getEnd() == -1 ? 1000 : g.getEnd());			
+			Graphing.renderGraph(camera, batch, UNIT, g, sampleRate, startX < 0 ? 0 : startX, g.getEnd() < endX ? g.getEnd() : endX);			
 		}
 		RenderUtils.renderMouseValue(batch);
 		
