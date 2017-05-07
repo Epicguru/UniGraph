@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 public final class CameraUtils{
 
 	public static float zoom = 1;
+	public static boolean followEnd = false;
+	private static boolean oldPressed = false;
 	
 	public static void moveCamera(OrthographicCamera camera){		
 		if(Gdx.input.isButtonPressed(Buttons.MIDDLE)){
@@ -16,7 +18,16 @@ public final class CameraUtils{
 			camera.position.y += Gdx.input.getDeltaY() * camera.zoom;
 		}	
 		
+		if(Gdx.input.isButtonPressed(Buttons.LEFT) && !oldPressed){
+			followEnd = !followEnd;
+		}
+		oldPressed = Gdx.input.isButtonPressed(Buttons.LEFT);
+		
 		camera.zoom += (zoom - camera.zoom) * 0.1f;
+		
+		if(followEnd){
+			camera.position.x = Graphing.maxX * 64f;
+		}
 		
 		Gdx.input.setInputProcessor(new InputProcessor(){
 

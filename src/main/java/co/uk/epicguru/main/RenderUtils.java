@@ -100,6 +100,9 @@ public final class RenderUtils {
 
 	public static void renderNumbers(OrthographicCamera camera, float unit, Batch batch){
 		
+		if(camera.zoom > 5f)
+			return;
+		
 		float width = camera.viewportWidth / unit * camera.zoom;
 		float height = camera.viewportHeight / unit * camera.zoom;
 

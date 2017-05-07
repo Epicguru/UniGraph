@@ -52,6 +52,10 @@ public abstract class StaticGraphSampler implements GraphSampler {
 		return points.get(x);
 	}
 	
+	public void clearPoints(){
+		this.points.clear();
+	}
+	
 	protected float interpolate(float x){
 		
 		// We need to find the points which the x in in between.

@@ -10,8 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import co.uk.epicguru.examples.StaticGraphX;
-import co.uk.epicguru.examples.StaticGraphY;
+import co.uk.epicguru.examples.SoundStaticGraph;
 
 public class UniGraph extends Game{
 
@@ -41,8 +40,9 @@ public class UniGraph extends Game{
 	
 	// HERE
 	private static GraphSampler[] graphs = {
-			new StaticGraphX(),
-			new StaticGraphY()
+			//new StaticGraphX(),
+			//new StaticGraphY()
+			new SoundStaticGraph()
 	};
 	
 	
@@ -106,7 +106,7 @@ public class UniGraph extends Game{
 		RenderUtils.renderGrid(camera, UNIT, batch);
 		RenderUtils.renderNumbers(camera, UNIT, batch);
 		for(GraphSampler g : graphs){
-			Graphing.renderGraph(camera, batch, UNIT, g, 0.1f, 0, g.getEnd() == -1 ? 1000 : g.getEnd());			
+			Graphing.renderGraph(camera, batch, UNIT, g, 1f, 0, g.getEnd() == -1 ? 1000 : g.getEnd());			
 		}
 		RenderUtils.renderMouseValue(batch);
 		
