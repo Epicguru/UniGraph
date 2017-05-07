@@ -9,8 +9,12 @@ import co.uk.epicguru.main.StaticGraphSampler;
 
 public class SoundStaticGraph extends StaticGraphSampler {
 	
-	static AudioRecorder recorder = Gdx.audio.newAudioRecorder(22050, true);
-	public void runGraph(Param p){		
+	static AudioRecorder recorder;
+	public void runGraph(Param p){
+			
+		if(recorder == null)
+			recorder = Gdx.audio.newAudioRecorder(22050, true);
+			
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
 			super.clearPoints();			
 			

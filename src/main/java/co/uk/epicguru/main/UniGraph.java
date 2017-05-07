@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import co.uk.epicguru.examples.SoundStaticGraph;
+import co.uk.epicguru.examples.DynamicGraph;
 
 public class UniGraph extends Game{
 
@@ -40,9 +40,10 @@ public class UniGraph extends Game{
 	
 	// HERE
 	private static GraphSampler[] graphs = {
+			new DynamicGraph()
 			//new StaticGraphX(),
 			//new StaticGraphY()
-			new SoundStaticGraph()
+			//new SoundStaticGraph()
 	};
 	
 	
