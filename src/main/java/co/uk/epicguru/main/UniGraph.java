@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import co.uk.epicguru.examples.StaticGraphX;
+import co.uk.epicguru.examples.StaticGraphY;
+
 public class UniGraph extends Game{
 
 	public static void log(Object text){
@@ -36,9 +39,15 @@ public class UniGraph extends Game{
 		
 	}
 	
+	// HERE
+	private static GraphSampler[] graphs = {
+			new StaticGraphX(),
+			new StaticGraphY()
+	};
+	
+	
 	public static Color backgroundColour = new Color(0.9f, 0.9f, 0.9f, 1);
 	public static ColourTheme theme = ColourTheme.LIGHT;
-	private static GraphSampler graph = new DynamicGraphSampler(0.1f);
 	private static Batch batch;
 	public static OrthographicCamera camera;
 	public static float timer;
@@ -96,7 +105,9 @@ public class UniGraph extends Game{
 		
 		RenderUtils.renderGrid(camera, UNIT, batch);
 		RenderUtils.renderNumbers(camera, UNIT, batch);
-		Graphing.renderGraph(camera, batch, UNIT, UniGraph.graph, 1f, 0, graph.getEnd() == -1 ? 1000 : graph.getEnd());
+		for(GraphSampler g : graphs){
+			Graphing.renderGraph(camera, batch, UNIT, g, 0.1f, 0, g.getEnd() == -1 ? 1000 : g.getEnd());			
+		}
 		RenderUtils.renderMouseValue(batch);
 		
 		batch.end();

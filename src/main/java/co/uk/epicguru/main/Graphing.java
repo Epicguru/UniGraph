@@ -13,12 +13,15 @@ import com.badlogic.gdx.math.Vector3;
 public final class Graphing {
 
 	private static ShapeRenderer shapes = new ShapeRenderer();
-
+	public static float maxX;
+	
 	public static void renderGraph(OrthographicCamera camera, Batch batch, float unit, GraphSampler sampler, float sampleRate, float sampleStart, float sampleEnd){
 
 		if(sampleRate <= 0){
 			sampleRate = 0.0001f;
 		}
+		
+		float currentX = 0;
 		
 		Vector3 mousePos = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));		
 		Vector2 mousePosReal = new Vector2(mousePos.x, mousePos.y);	
@@ -29,14 +32,21 @@ public final class Graphing {
 		shapes.setProjectionMatrix(camera.combined);
 		shapes.begin(ShapeType.Filled);
 
-		float oldY = sampler.sample(sampleStart);
+		Param p = new Param(-1f, UniGraph.timer, Gdx.graphics.getDeltaTime());
+		sampler.runGraph(p);
+		
+		float oldY = sampler.sample(p);
 		for(float x = sampleStart + sampleRate; x < sampleEnd; x += sampleRate){
 			
-			float currentY = sampler.sample(x);
+			p.setX(x);
+			float currentY = sampler.sample(p);
+			
+			if(x > currentX)
+				currentX = x;
 
 			float X = x - sampleRate;
 			
-			line(X, oldY, x, currentY, unit, Color.RED, Color.BLUE);
+			line(X, oldY, x, currentY, unit, sampler.getColor(), sampler.getColor());
 			
 			c.x = x * unit;
 			c.y = currentY * unit;
@@ -58,6 +68,9 @@ public final class Graphing {
 			
 			oldY = currentY;
 		}
+		
+		maxX = currentX;
+		
 		shapes.end();
 		batch.begin();
 

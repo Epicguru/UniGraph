@@ -3,25 +3,20 @@ package co.uk.epicguru.main;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
 
-public class DynamicGraphSampler implements GraphSampler {
+public abstract class StaticGraphSampler implements GraphSampler {
 
 	public static final float MINIMUM_SAMPLE_RATE = 0.001f;
 	private ArrayList<Float> points = new ArrayList<Float>();
 	private Interpolation interpolation = Interpolation.linear;
 	private float sampleRate;
 	
-	public DynamicGraphSampler(float sampleRate){
-		if(sampleRate < DynamicGraphSampler.MINIMUM_SAMPLE_RATE){
-			sampleRate = DynamicGraphSampler.MINIMUM_SAMPLE_RATE;
+	public StaticGraphSampler(){
+		if(sampleRate < StaticGraphSampler.MINIMUM_SAMPLE_RATE){
+			sampleRate = StaticGraphSampler.MINIMUM_SAMPLE_RATE;
 		}
 		
-		this.sampleRate = 1;	// CURRENTLY DISABLED!!!
-		
-		for(int i = 0; i < 100; i++){
-			points.add(MathUtils.cosDeg(i * 10f) * 20f);
-		}		
+		this.sampleRate = 1;	// CURRENTLY DISABLED!!!	
 	}
 	
 	public float getSampleRate(){
@@ -30,6 +25,31 @@ public class DynamicGraphSampler implements GraphSampler {
 	
 	public Interpolation getInterpolation(){
 		return this.interpolation;
+	}
+	
+	/**
+	 * Removes last (index 0) point and adds the new point on to the end.
+	 */
+	public void shiftPoint(float y){
+		if(points.size() > 0)
+			points.remove(0);
+		points.add(y);
+	}
+	
+	public void addPoint(float y){
+		this.points.add(y);
+	}
+	
+	public void removePoint(int index){
+		this.points.remove(index);
+	}
+	
+	public int getPointsLength(){
+		return this.points.size();
+	}
+	
+	public float getPoint(int x){
+		return points.get(x);
 	}
 	
 	protected float interpolate(float x){
@@ -52,9 +72,11 @@ public class DynamicGraphSampler implements GraphSampler {
 		
 	}
 	
-	public float getY(Param p){
-		return this.interpolate(p.getX());
+	public float getY(Param p){		
+		return this.interpolate(p.getX());		
 	}
+	
+	public void runGraph(Param p) { };
 	
 	@Override
 	public float sample(Param p) {

@@ -7,12 +7,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public final class CameraUtils{
 
+	public static float zoom = 1;
+	
 	public static void moveCamera(OrthographicCamera camera){		
 		if(Gdx.input.isButtonPressed(Buttons.MIDDLE)){
 			// Pan
 			camera.position.x += -Gdx.input.getDeltaX() * camera.zoom;
 			camera.position.y += Gdx.input.getDeltaY() * camera.zoom;
-		}		
+		}	
+		
+		camera.zoom += (zoom - camera.zoom) * 0.1f;
 		
 		Gdx.input.setInputProcessor(new InputProcessor(){
 
@@ -62,9 +66,9 @@ public final class CameraUtils{
 			public boolean scrolled(int amount) {
 				float size = 0.2f;
 				if(amount > 0){
-					camera.zoom *= 1f + size;
+					zoom *= 1f + size;
 				}else{
-					camera.zoom *= 1f - size;					
+					zoom *= 1f - size;					
 				}
 				return false;
 			}
